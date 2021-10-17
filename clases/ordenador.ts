@@ -1,10 +1,12 @@
 export class Ordenador {
   protected _precioBase: number; // para acceder en la subclase
+  private _id: string;
   private _comsumoMaximo: number;
   private _capacidadRAM: number;
   private _graficaDedicada: Boolean;
   
-  constructor(precioBase: number, comsumoMaximo: number, capacidadRAM: number, graficaDedicada: Boolean) {
+  constructor( id: string, precioBase: number, comsumoMaximo: number, capacidadRAM: number, graficaDedicada: Boolean) {
+    this._id = id; //Este dato será unico
     this._precioBase = precioBase;
     this._comsumoMaximo = comsumoMaximo;
     this._capacidadRAM = capacidadRAM;
@@ -12,6 +14,9 @@ export class Ordenador {
   }
   get precioBase() {
     return this._precioBase;
+  }
+  get id() {
+    return this._id;
   }
   get comsumoMaximo() {
     return this._comsumoMaximo;
@@ -23,15 +28,16 @@ export class Ordenador {
     return this._graficaDedicada;
   }
 
+  //si tiene grafica dedicada es mas cara
   precio(): number {
     let precio: number;
     precio = this._precioBase;
-    if (this._comsumoMaximo > 150) {
-      precio += 0.2 * precio;
+    if (this._graficaDedicada == true) {
+      precio += 0.5 * precio;
     }
     return precio;
   }
   todo() {
-    return `Precio base: ${this._precioBase}, Consumo Máximo: ${this._comsumoMaximo}`;
+    return `Identificador: ${this._id}, Precio base: ${this._precioBase}, Consumo Máximo: ${this._comsumoMaximo}, Capacidad de la RAM: ${this._capacidadRAM}, Tarjeta Grafica Dedicada: ${this._graficaDedicada},`;
   }
 }
