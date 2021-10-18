@@ -15,7 +15,9 @@ O
 
 Para ejecutar lo que hemos compilado usamos :
 >node dist 
-o 
+
+O
+
 >node dist/index
 
 Funciona con node dist porque tenemos la siguiente línea en package.json: "main": "index.js",
