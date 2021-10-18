@@ -1,5 +1,5 @@
 import { Ordenador } from './ordenador';
-export class Sobremesa extends Ordenador { //extend se utiliza para 
+export class Sobremesa extends Ordenador { //Mediante la palabra clave extends indicamos el nombre de la clase padre.
     private _refrigeracion: string;
     private _modeloCaja: string;
 

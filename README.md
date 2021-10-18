@@ -1,4 +1,5 @@
-# Proyecto03 herencias Typescript Daniel Muñoz Nuñez
+# Proyecto03 herencias Typescript 
+# Daniel Muñoz Nuñez
 ## En este proyecto diseñaremos un programa que preguntará al usuario por diferentes tipos de ordenadores, los guardaremos en un array y posteriormente podremos realizar operaciones con dichos datos.
 
 Creamos un nuevo proyecto y dentro de esa carpeta:

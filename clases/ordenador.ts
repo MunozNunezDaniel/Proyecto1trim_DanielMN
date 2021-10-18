@@ -1,9 +1,9 @@
 export class Ordenador {
   protected _precioBase: number; // para acceder en la subclase
-  private _id: string;
-  private _comsumoMaximo: number;
-  private _capacidadRAM: number;
-  private _graficaDedicada: Boolean;
+  protected _id: string;
+  protected _comsumoMaximo: number;
+  protected _capacidadRAM: number;
+  protected _graficaDedicada: Boolean;
   
   constructor( id: string, precioBase: number, comsumoMaximo: number, capacidadRAM: number, graficaDedicada: Boolean) {
     this._id = id; //Este dato será unico

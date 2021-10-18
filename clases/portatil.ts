@@ -1,5 +1,5 @@
 import { Ordenador } from './ordenador';
-export class Portatil extends Ordenador { //extend se utiliza para 
+export class Portatil extends Ordenador { //Mediante la palabra clave extends indicamos el nombre de la clase padre.
     private _tipoPantalla: string;
     private _duracionBateria: string;
   
@@ -14,17 +14,16 @@ export class Portatil extends Ordenador { //extend se utiliza para
     get duracionBateria() {
         return this._duracionBateria;
     }
-    // sobre escribimos el método
-    /*
+    // sobre escribimos el método, si la pantalla es ips el portatil es un 10% mas barato
     precio(): number {
       let precio: number;
       precio = super.precio();
-      if (this._refrigeracion == '4x4') {
-        precio += 0.1 * precio;
+      if (this._tipoPantalla == 'ips') {
+        precio -= 0.1 * precio;
       }
       return precio;
     }
-  */
+
     todo(){
       let resultado: string
       resultado = `${super.todo()}, Tipo de pantalla: ${this._tipoPantalla}, Duracion de batería: ${this._duracionBateria}`
