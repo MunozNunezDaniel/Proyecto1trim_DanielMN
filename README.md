@@ -7,7 +7,9 @@ Para instalar el proyecto:
 
 Para compilar usamos:
 >npx tsc -w
-o 
+
+O 
+
 >tsc -w
 (si tenemos typescript a nivel global) y creará el dist
 
