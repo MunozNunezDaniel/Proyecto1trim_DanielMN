@@ -1,6 +1,6 @@
-# Proyecto03 herencias Typescript 
+# Proyecto 1º trimestre: Tienda de informática
 # Daniel Muñoz Nuñez
-## En este proyecto crearemos un programa que preguntará al usuario por diferentes tipos de ordenadores, los guardaremos en un array y posteriormente podremos realizar operaciones con dichos datos.
+## En este proyecto crearemos un programa que simulará el funcionamiento de una tienda de informática.......
 
 Para instalar el proyecto:
 >npm install
@@ -19,9 +19,5 @@ Para ejecutar lo que hemos compilado usamos :
 O
 
 >node dist/index
-
-Funciona con node dist porque tenemos la siguiente línea en package.json: "main": "index.js",
-
-O si lo que queremos es ejecutar otro fichero, por ejemplo prueba.js
 
 >node dist/prueba

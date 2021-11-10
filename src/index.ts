@@ -1,8 +1,8 @@
-import { Ordenador } from './clases/ordenador';
+import { Ordenador } from './clases/dispositivo';
 import { Sobremesa } from './clases/sobremesa';
 import { menuPrinc, tipos } from './view/menuPrinc';
 import { leerTeclado } from './view/entradaTeclado';
-import { Portatil } from './clases/portatil';
+import { Portatil } from './clases/ordenador';
 
 const main = async () => {
   let n: number;
@@ -23,7 +23,7 @@ const main = async () => {
       switch(n){
         //Añadir ordenador
           case 1:
-              console.log("Estas en la opción 1")
+              console.log("\nEstas en la opción 1")
 
               let id: string, precioBase: number, comsumoMaximo: number, capacidadRAM: number, graficaDedicada: boolean;
               let grafica: string;
@@ -32,8 +32,9 @@ const main = async () => {
               do {
                   n2 = await tipos()
                   switch (n2) {
+                    //Añadir ordenador normal
                     case 1:
-                      id = await leerTeclado('Introduzca el identificador del ordenador')
+                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
                       precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
                       comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
                       capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
@@ -43,9 +44,12 @@ const main = async () => {
                        } else {
                         graficaDedicada = false
                       }
+                      ordenador = new Ordenador (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada);
+                      Ordenadores.push(ordenador);
                     break
+                    //Añadir ordenador sobremesa
                     case 2:
-                      id = await leerTeclado('Introduzca el identificador del ordenador')
+                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
                       precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
                       comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
                       capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
@@ -57,9 +61,12 @@ const main = async () => {
                       }
                       refrigeracion = await leerTeclado('Introduzca el tipo de refrigeracion del ordenador, introduzca liquida o aire')
                       modeloCaja = await leerTeclado('Introduzca el modelo de la caja del ordenador')
+                      sobremesa = new Sobremesa (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada, refrigeracion, modeloCaja);
+                      Ordenadores.push(sobremesa);
                       break;
+                    //Añadir ordenador portatil
                     case 3:
-                      id = await leerTeclado('Introduzca el identificador del ordenador')
+                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
                       precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
                       comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
                       capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
@@ -71,13 +78,15 @@ const main = async () => {
                       }
                       tipoPantalla = await leerTeclado('Introduzca el tipo pantalla del portatil')
                       duracionBateria = await leerTeclado('Introduzca la duracion de la bateria en minutos')
+                      portatil = new Portatil (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada, tipoPantalla, duracionBateria);
+                      Ordenadores.push(portatil);
                       break;
                   }
               } while (n2!=4);   
               break
         //Listar todos los ordenadores
           case 2:
-              console.log("Estoy en opción 2")
+              console.log("\nEstoy en opción 2")
               for (let a of Ordenadores) {
                 console.log(a instanceof Sobremesa);
                 console.log(a instanceof Portatil);
@@ -86,7 +95,7 @@ const main = async () => {
               break
         //Modificar ordenador      
           case 3:
-              console.log("Estoy en opción 3")
+              console.log("\nOpción 3")
                 let graficaDedicada_mod: boolean;
                 let id_mod= await leerTeclado('Id del ordenador que desea modificar: ')
                 let precioBase_mod= parseInt(await leerTeclado("Nuevo precio base del ordenador: "))
@@ -115,16 +124,16 @@ const main = async () => {
                 Ordenadores[modifica] = FIJO_nuevo;
                 Ordenadores[modifica] = PORTATIL_nuevo;
               break
-        //Eliminar ordenador
+        //Eliminar ordenador, cambiar y hacer que primero te los muestre y que eligas el que quieres borrar, hacerlo con splice
           case 4:
-              console.log("Estoy en opción 4")
+              console.log("\nEstoy en opción 4")
               let eliminar = await leerTeclado("Introduzca el id del ordenador a eliminar: ")
               let borrar = Ordenadores.findIndex(Ordenadores=>Ordenadores.id==eliminar)
               let suprimir = Ordenadores.splice(borrar,1)
               break
         //Ver un ordenador concreto
           case 5:
-              console.log("Estoy en opción 5")
+              console.log("\nEstoy en opción 5")
               let ver = await leerTeclado("Escriba el id del ordenador que quiere ver: ")
               let info = Ordenadores.findIndex(Ordenadores=>Ordenadores.id==ver)
               console.log(Ordenadores[info])
@@ -134,7 +143,7 @@ const main = async () => {
               console.log('\nAdios')
               break
           default:
-              console.log("Opción incorrecta")
+              console.log("\nOpción incorrecta")
               break
       }
   } while (n != 0)
