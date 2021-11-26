@@ -1,37 +1,55 @@
 export class Dispositivo {
-  protected _id_dispositivo:string;
+  private _id:string;
   protected _F_fabric: Date;
-  private _tipo_disp: string;
+  protected _precioBase: number; //Para acceder a la subclase
+  private _Wifi: boolean;
 
-  constructor(id_dispositivo:string, F_fabric:Date, tipo_disp: string) {
-    this._id_dispositivo = id_dispositivo;
+  constructor(
+    id:string, 
+    F_fabric:Date,
+    precioBase: number,
+    Wifi: boolean
+  )
+  {
+    this._id = id;
     this._F_fabric = F_fabric;
-    this._tipo_disp = tipo_disp;
+    this._precioBase = precioBase;
+    this._Wifi = Wifi;
   }
 
-  get id_dispositivo() {
-    return this._id_dispositivo;
+  get id() {
+    return this._id;
   }
   get F_fabric() {
     return this._F_fabric;
   }
-  get tipo_disp() {
-    return this._tipo_disp;
+  get precioBase() {
+    return this._precioBase;
   }
-}
-  //si tiene grafica dedicada es mas cara
-  /*
-  precio(): number {
-    let precio: number;
-    precio = this._precioBase;
-    if (this._graficaDedicada == true) {
-      precio += 0.5 * precio;
+  get Wifi() {
+    return this._Wifi;
+  }
+
+  
+  //si tiene Wifi es un 5% mas caro
+
+  precioFinal(): number {
+    let precio: number
+    let Wifi: boolean
+    precio = this._precioBase
+    Wifi = this._Wifi
+    if (Wifi == true) {
+      precio += 0.05 * precio;
     }
-    return precio;
+    return precio
   }
+
   todo() {
-    return `Identificador: ${this._id}, Precio base: ${this._precioBase}, Consumo Máximo: ${this._comsumoMaximo}, Capacidad de la RAM: ${this._capacidadRAM}, Tarjeta Grafica Dedicada: ${this._graficaDedicada},`;
+    return `Identificador: ${this._id},
+    Fecha de fabricación: ${this._F_fabric}, 
+    Precio Base: ${this._precioBase}, 
+    Wifi: ${this._Wifi},`;
   }
 }
-*/
+
 

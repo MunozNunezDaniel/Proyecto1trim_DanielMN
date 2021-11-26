@@ -1,151 +1,300 @@
-import { Ordenador } from './clases/dispositivo';
-import { Sobremesa } from './clases/sobremesa';
-import { menuPrinc, tipos } from './view/menuPrinc';
-import { leerTeclado } from './view/entradaTeclado';
-import { Portatil } from './clases/ordenador';
+import { Dispositivo } from './clases/dispositivo'
+import { Ordenador } from './clases/ordenador'
+import { Telefono } from './clases/telefono'
+import { Pedido } from './clases/pedido'
+import { Reposicion } from './clases/reposicion'
+import { Programado } from './clases/programado'
+import { Dispositivos, Disp, Ord, Telf } from './schemas/dispositivo'
+import { Pedidos, Ped, Rep, Progr } from './schemas/pedido'
+import { menuPrinc, menuDisp, menuPedido } from './view/menuPrinc'
+import { leerTeclado } from './view/entradaTeclado'
+import { db } from './database/database'
+
+const F_covid: Date = new Date("2019-01-01")
+
+let n2: number
+let Atlas: string = "N"
+let dispositivos: Array<Dispositivo> = new Array<Dispositivo>();
+let pedidos: Array<Pedido> = new Array<Pedido>();
+
+//Dispositivos de prueba
+dispositivos[0] = new Ordenador("D8785", new Date("2018-01-01"), 1243, true, true, F_covid)
+dispositivos[0] = new Ordenador("D9483", new Date("2017-01-01"), 500, true, false, F_covid)
+dispositivos[0] = new Ordenador("D9563", new Date("2010-01-01"), 300, false, true, F_covid)
+dispositivos[0] = new Telefono("D9873", new Date("2018-01-01"), 1300, true, "ips")
+dispositivos[0] = new Telefono("D0384", new Date("2012-01-01"), 200, false, "ips")
+dispositivos[0] = new Telefono("D8456", new Date("2007-01-01"), 700, true, "amoled")
+
+//Pedidos de prueba
+pedidos[0] = new Programado("P6764", 30, "express", "Voluntad 32", true)
+pedidos[0] = new Programado("P6764", 30, "express", "Voluntad 32", true)
+pedidos[0] = new Programado("P6764", 30, "express", "Voluntad 32", true)
+pedidos[0] = new Reposicion("P8465", 20, "estandar", "Esp de triana 4", false )
+pedidos[0] = new Reposicion("P8465", 20, "estandar", "Esp de triana 4", false )
+pedidos[0] = new Reposicion("P8465", 20, "estandar", "Esp de triana 4", false )
+
+const setBD = async (local: boolean) => {
+  const bdLocal = 'Proyecto1_DanielMN'
+  const conexionLocal = `mongodb://localhost/${bdLocal}`
+
+  if (local) {
+    db.cadenaConexion = conexionLocal
+  } else {
+    const bdAtlas = 'Proyecto1_DanielMN'
+    const userAtlas = await leerTeclado('Usuario BD Atlas')
+    const passAtlas = await leerTeclado('Password BD Atlas')
+    const conexionAtlas =  
+    `mongodb+srv://${userAtlas}:${passAtlas}@cluster0.49asp.mongodb.net/${bdAtlas}?retryWrites=true&w=majority`
+    db.cadenaConexion = conexionAtlas
+  }
+}
+
+//Crear nuevo Ordenador Probar si funciona esto solo 
+const nuevoOrd = async (dispositivos: Array<Dispositivo>) =>  {                                 
+  ord: Ordenador;
+  id = await leerTeclado('\nID: ');
+  F_fabric = await leerTeclado('Fecha de fabricacion');
+  precioBase = await leerTeclado('Precio base') ;
+  Wifi = Boolean ( await leerTeclado('¿Tiene Wifi? si o no:') );
+  if (Wifi == "si") {
+    Wifi = true
+  } else {
+    Wifi = false
+  }
+  grafica_dedic = Boolean( await leerTeclado('¿Tiene grafica dedicada?') );
+  const F_covid = new Date("2019-01-01");
+  ord = new Ordenador (id, F_fabric, precioBase, Wifi, grafica_dedic, F_covid);
+  dispositivos.push(ord);
+
+  //Ver si poner el campo Tipo objeto
+  await db.conectarBD()
+    const ordSchema ={
+        _id: ordenador.id,
+        _F_fabric: ordenador.F_fabric,
+        _precio_base: ordenador.precioBase,
+        _Wifi: ordenador.Wifi,
+        _grafica_dedic: ordenador.grafica_dedic,
+        _F_covid: ordenador.F_covid
+    }
+    const Schema = new Dispositivos(ordSchema)
+    await Schema.save()
+    .then((doc: string)=> console.log('El ordenador se ha guardado correctamente' + doc))
+    .catch((err:any)=> console.log(err))
+    await db.desconectarBD()
+    return ord
+}
+
+let n: number
+let ord: Ordenador | undefined
+let menuPrincipal: number
+let menuDispositivo: number
+let menuPedido: number
+let dispositivo: Dispositivo
+let ordenador: Ordenador
+let telefono: Telefono
+let pedido: Pedido
+let reposicion: Reposicion
+let programado: Programado
+
 
 const main = async () => {
-  let n: number;
-  let n2: number;
-  let ordenador: Ordenador;
-  let sobremesa: Sobremesa;
-  let portatil: Portatil;
-  let Ordenadores: Array<Ordenador> = new Array<Ordenador>();
-
-  Ordenadores[0] = new Ordenador("PC2000", 2000, 500, 16, false)
-  Ordenadores[1] = new Sobremesa("PC1000", 1000, 300, 16, true, "liquida", "NOX Coolbay SX")
-  Ordenadores[2] = new Sobremesa("PC3000", 3000, 600, 32, true, "liquida", "NOX Hummer MC")
-  Ordenadores[3] = new Portatil("g15", 3000, 200, 32, true, "OLED", "400")
-  Ordenadores[4] = new Portatil("g14", 2000, 100, 16, false, "IPS", "600")
+  let n: number
+  let ord: Ordenador | undefined
+  let menuPrincipal: number
+  let menuDispositivo: number
+  let menuPedido: number
+  let dispositivo: Dispositivo
+  let ordenador: Ordenador
+  let telefono: Telefono
+  let pedido: Pedido
+  let reposicion: Reposicion
+  let programado: Programado
 
   do {
-      n = await menuPrinc()
-      switch(n){
-        //Añadir ordenador
+    menuPrincipal = await menuPrinc()
+      switch(menuPrincipal) {
           case 1:
-              console.log("\nEstas en la opción 1")
-
-              let id: string, precioBase: number, comsumoMaximo: number, capacidadRAM: number, graficaDedicada: boolean;
-              let grafica: string;
-              let refrigeracion: string, modeloCaja: string;
-              let tipoPantalla: string, duracionBateria: string;
-              do {
-                  n2 = await tipos()
-                  switch (n2) {
-                    //Añadir ordenador normal
-                    case 1:
-                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
-                      precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
-                      comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
-                      capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
-                      grafica =  await leerTeclado('Diga si el equipo posee tarjeta gráfica dedicada, introduzca si o no')
-                      if (grafica == "si") {
-                        graficaDedicada = true
-                       } else {
-                        graficaDedicada = false
-                      }
-                      ordenador = new Ordenador (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada);
-                      Ordenadores.push(ordenador);
-                    break
-                    //Añadir ordenador sobremesa
-                    case 2:
-                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
-                      precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
-                      comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
-                      capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
-                      grafica =  await leerTeclado('Diga si el equipo posee tarjeta gráfica dedicada, introduzca si o no')
-                      if (grafica == "si") {
-                        graficaDedicada = true
-                       } else {
-                        graficaDedicada = false
-                      }
-                      refrigeracion = await leerTeclado('Introduzca el tipo de refrigeracion del ordenador, introduzca liquida o aire')
-                      modeloCaja = await leerTeclado('Introduzca el modelo de la caja del ordenador')
-                      sobremesa = new Sobremesa (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada, refrigeracion, modeloCaja);
-                      Ordenadores.push(sobremesa);
-                      break;
-                    //Añadir ordenador portatil
-                    case 3:
-                      id = await leerTeclado('\nIntroduzca el identificador del ordenador')
-                      precioBase =  parseInt( await leerTeclado('Introduzca el precio base'))
-                      comsumoMaximo =  parseInt( await leerTeclado('Introduzca el consumo maximo en vatios'))
-                      capacidadRAM =  parseInt( await leerTeclado('Introduzca la capacidad de memoria RAM en GB'))
-                      grafica =  await leerTeclado('Diga si el equipo posee tarjeta gráfica dedicada, introduzca si o no')
-                      if (grafica == "si") {
-                        graficaDedicada = true
-                       } else {
-                        graficaDedicada = false
-                      }
-                      tipoPantalla = await leerTeclado('Introduzca el tipo pantalla del portatil')
-                      duracionBateria = await leerTeclado('Introduzca la duracion de la bateria en minutos')
-                      portatil = new Portatil (id, precioBase, comsumoMaximo, capacidadRAM, graficaDedicada, tipoPantalla, duracionBateria);
-                      Ordenadores.push(portatil);
-                      break;
+              let id: number, F_fabric: Date, precioBase: number, Wifi: Boolean, grafica_dedic: Boolean
+              let F_covid = new Date("2019-01-01");
+              let menuDispositivo: number
+              do{
+                  menuDispositivo = await menuDisp()
+                  switch(menuDispositivo) {
+                      case 1:
+                          id = parseInt(await leerTeclado("Identificador del nuevo paciente: "))
+                          nombre = await leerTeclado("Nombre: ")
+                          apellido1 = await leerTeclado("Primer apellido: ")
+                          apellido2 = await leerTeclado("Segundo apellido: ")
+                          edad = parseInt(await leerTeclado("Edad del paciente: "))
+                          dni = await leerTeclado("DNI: ")
+                          asegurado = await leerTeclado("¿Tiene seguro medico?: ")
+                              if (asegurado == "si" || asegurado == "Si" || asegurado == "SI") {
+                                seguro = true
+                              } else {
+                                 seguro = false
+                          }
+                          telefono = parseInt(await leerTeclado("Teléfono:  "))
+                          dolencia = await leerTeclado("¿Qué le ocurre?: ")
+                          tipo = await leerTeclado("Tipo de paciente: ")
+                              if(tipo=="covid"){
+                                  test = await leerTeclado("¿Qué test se va a hacer?")
+                                  coste = covid.pago()
+                              } else if (tipo == "urgencias"){
+                                  prueba = await leerTeclado("¿Qué pruebas se le van a hacer?")
+                                  coste = urgencias.pago()
+                              }
+                      break
+                      case 2:
+                          await db.conectarBD()
+                          const paciSchema ={
+                              _id: paciente.id,
+                              _nombre: paciente.nombre,
+                              _apellido1: paciente.apellido1,
+                              _apellido2: paciente.apellido2,
+                              _edad: paciente.edad,
+                              _dni: paciente.dni,
+                              _seguro: paciente.seguro,
+                              _telefono: paciente.telefono,
+                              _dolencia: paciente.dolencia,
+                              _prueba: urgencias.prueba,
+                              _test: covid.test,
+                              _preciobase: paciente
+                          }
+                          const Schema = new Pacientes(paciSchema)
+                          await Schema.save()
+                          .then((doc: string)=> console.log('El paciente se ha guardado correctamente' + doc))
+                          .catch((err:any)=> console.log(err))
+                          await db.desconectarBD()
+                      break
+                      case 3:
+                          await db.conectarBD()
+                          await pacientes.find({},
+                              (err:any, doc: null) => {
+                                  if(err){
+                                      console.log(err)
+                                  }else{
+                                      if(doc == null) console.log(`No existen documentos`)
+                                      else console.log
+                                  }
+                              }) 
+                              await db.desconectarBD()
+                      break
+                      case 4:
+                          await db.conectarBD()
+                          const borrar = parseInt(await leerTeclado('Ponga el ID del paciente que quiere eliminar'))
+                          await Pacientes.findOneAndDelete(
+                              {
+                                  _id: borrar
+                              },
+                              (err:any, doc: string | null) => {
+                                  if(err){
+                                      console.log(err)
+                                  }else{
+                                      if(doc == null)console.log(`No se ha encontrado dicho paciente`)
+                                      else console.log(`Documento Borrado`+ doc)
+                                  }
+                              })
+                          await db.desconectarBD()
+                      break
                   }
-              } while (n2!=4);   
-              break
-        //Listar todos los ordenadores
+              } while (menuDispositivo!=5)
           case 2:
-              console.log("\nEstoy en opción 2")
-              for (let a of Ordenadores) {
-                console.log(a instanceof Sobremesa);
-                console.log(a instanceof Portatil);
-                console.log(`${a.todo()}, precio: ${a.precio()}`);
-              }
-              break
-        //Modificar ordenador      
+              let idemp:number, nombreemp:string, apellido:string, puesto:string
+              let sueldo: number, especialidad: string, segundoIdioma: string, contacto: number
+              let idpaciente:number
+              let menuPedido: number,
+              do{
+                  menuPedido = await emplear()
+                  switch(menuPedido) {
+                      case 1:
+                          idemp = parseInt(await leerTeclado("Identificador del nuevo empleado: "))
+                          nombreemp = await leerTeclado("Nombre: ")
+                          apellido = await leerTeclado("Primer apellido: ")
+                          contacto = parseInt(await leerTeclado("Teléfono:  "))
+                          idpaciente = parseInt(await leerTeclado("Que pacientes tiene asignado: "))
+                          puesto = await leerTeclado ("Que tipo de trabajador es"){
+                              if (puesto=="medico"){
+                                  especialidad = await leerTeclado("¿Qué especialidad tiene?")
+                                  sueldo = medicos.salario()
+                              } else if (puesto=="administrativo"){
+                                  segundoIdioma = await leerTeclado("¿Cual es su segundo idioma?")
+                                  sueldo = administrativo.salario()
+                              }
+                          }
+                      } 
+                      break
+                      case 2:
+                          await db.conectarBD()
+                          const paciSchema ={
+                              _idemp: empleado.idemp,
+                              _nombreemp: empleado.nombreemp,
+                              _apellido: empleado.apellido,
+                              _contacto: empleado.contacto,
+                              _especialidad: medicos.especialidad,
+                              _segundoIdioma: administrativo.segundoIdioma,
+                              _preciobase: paciente
+                          }
+                          const Schema = new Pacientes(paciSchema)
+                          await Schema.save()
+                          .then((doc: string)=> console.log('El paciente se ha guardado correctamente' + doc))
+                          .catch((err:any)=> console.log(err))
+                          await db.desconectarBD()
+                      break
+                      case 3:
+                          await db.conectarBD()
+                          await empleado.find({},
+                              (err:any, doc: null) => {
+                                  if(err){
+                                      console.log(err)
+                                  }else{
+                                      if(doc == null) console.log(`No existen documentos`)
+                                      else console.log
+                                  }
+                              }) 
+                              await db.desconectarBD()
+                      break
+                      case 4:
+                      await db.conectarBD()
+                          const delete = parseInt(await leerTeclado('Ponga el ID del empleado que quiere eliminar'))
+                          await empleados.findOneAndDelete(
+                              {
+                                  _id: borrar
+                              },
+                              (err:any, doc: string | null) => {
+                                  if(err){
+                                      console.log(err)
+                                  }else{
+                                      if(doc == null)console.log(`No se ha encontrado dicho empleado`)
+                                      else console.log(`Documento Borrado`+ doc)
+                                  }
+                              })
+                          await db.desconectarBD()
+                      break
+                  }
+              }while (menuPedido!=5)
+          break
           case 3:
-              console.log("\nOpción 3")
-                let graficaDedicada_mod: boolean;
-                let id_mod= await leerTeclado('Id del ordenador que desea modificar: ')
-                let precioBase_mod= parseInt(await leerTeclado("Nuevo precio base del ordenador: "))
-                let comsumoMaximo_mod= parseInt(await leerTeclado("Nuevo consumo maximo: "))
-                let capacidadRAM_mod= parseInt(await leerTeclado("Nueva capacidad de RAM: "))
-                let grafica_mod =  await leerTeclado('Diga si el equipo posee tarjeta gráfica dedicada, introduzca si o no')
-                if (grafica_mod == "si") {
-                  graficaDedicada_mod = true
-                 } else {
-                  graficaDedicada_mod = false
-                }
-                let PC_nuevo = new Ordenador (id_mod, precioBase_mod, comsumoMaximo_mod, capacidadRAM_mod, graficaDedicada_mod)
-
-                let refrigeracion_mod = await leerTeclado("Nuevo tipo de refrigeracion, introduzca liquida o aire: ")
-                let modeloCaja_mod = await leerTeclado("Nuevo modelo de caja: ")
-
-                let FIJO_nuevo = new Sobremesa (id_mod, precioBase_mod, comsumoMaximo_mod, capacidadRAM_mod, graficaDedicada_mod, refrigeracion_mod, modeloCaja_mod)
-            
-                let tipoPantalla_mod = await leerTeclado ("Nuevo tipo de pantalla: ")
-                let duracionBateria_mod = await leerTeclado ("Nueva duracion de batería en minutos: ")
-
-                let PORTATIL_nuevo = new Portatil (id_mod, precioBase_mod, comsumoMaximo_mod, capacidadRAM_mod, graficaDedicada_mod, tipoPantalla_mod, duracionBateria_mod)
-                
-                let modifica = Ordenadores.findIndex(Ordenadores => Ordenadores.id==id_mod)
-                Ordenadores[modifica] = PC_nuevo;
-                Ordenadores[modifica] = FIJO_nuevo;
-                Ordenadores[modifica] = PORTATIL_nuevo;
-              break
-        //Eliminar ordenador, cambiar y hacer que primero te los muestre y que eligas el que quieres borrar, hacerlo con splice
-          case 4:
-              console.log("\nEstoy en opción 4")
-              let eliminar = await leerTeclado("Introduzca el id del ordenador a eliminar: ")
-              let borrar = Ordenadores.findIndex(Ordenadores=>Ordenadores.id==eliminar)
-              let suprimir = Ordenadores.splice(borrar,1)
-              break
-        //Ver un ordenador concreto
-          case 5:
-              console.log("\nEstoy en opción 5")
-              let ver = await leerTeclado("Escriba el id del ordenador que quiere ver: ")
-              let info = Ordenadores.findIndex(Ordenadores=>Ordenadores.id==ver)
-              console.log(Ordenadores[info])
-              break
-        //Salir
-          case 0:
-              console.log('\nAdios')
-              break
-          default:
-              console.log("\nOpción incorrecta")
-              break
+              let menu4: number, salario: number, idemp: number
+              let objIndex: number
+              do{
+                  menu4 = await emplear()
+                  switch(menu4){
+                      case 1:
+                          await db.conectarBD()
+                          const buscar = async () => {
+                              let identificador: number
+                              identificador = parseInt(await leerTeclado("Teléfono:  "))
+                              if(identificador==empleados.idemp){
+                                  for (let a of Empleados) {
+                                      console.log(a.todo())
+                                  }
+                              }
+                          }
+                          }
+                      break
+                  }while(menu4!=3)
+          break
       }
-  } while (n != 0)
+  } while(menuPrincipal!=3)
 }
 main()
